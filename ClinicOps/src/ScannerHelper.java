@@ -4,11 +4,6 @@ public class ScannerHelper {
 
     /**
      * Reads an integer from the user.
-     * Keeps asking until a valid integer is entered.
-     *
-     * @param scanner Scanner object
-     * @param message Prompt message
-     * @return Valid integer entered by user
      */
     public static int readInteger(Scanner scanner, String message) {
 
@@ -17,16 +12,32 @@ public class ScannerHelper {
             System.out.print(message);
 
             try {
-                int value = Integer.parseInt(scanner.nextLine());
-                return value;
+                return Integer.parseInt(scanner.nextLine());
 
             } catch (NumberFormatException e) {
 
-                System.out.println("---------------------------------------");
-                System.out.println("Invalid Input!");
-                System.out.println("Please enter a valid numeric value.");
-                System.out.println("---------------------------------------");
+                System.out.println("Invalid input! Please enter a valid number.");
             }
         }
     }
+
+    /**
+     * Reads a non-empty string.
+     */
+    public static String readString(Scanner scanner, String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String value = scanner.nextLine().trim();
+
+            if (!value.isEmpty()) {
+                return value;
+            }
+
+            System.out.println("Input cannot be empty.");
+        }
+    }
+
 }
