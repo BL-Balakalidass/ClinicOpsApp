@@ -238,9 +238,15 @@ public class FrontDeskMenu {
         Doctor assignedDoctor =
                 doctors.stream()
 
+                        // Filter 1
                         .filter(doc ->
                                 doc.getSpecialization() == specialization)
 
+                        // Filter 2
+                        .filter(doc ->
+                                doc.isShiftCompatible(slot))
+
+                        // Filter 3
                         .filter(doc ->
                                 doc.isSlotAvailable(slot))
 
