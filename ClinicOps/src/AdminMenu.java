@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,6 +11,7 @@ public class AdminMenu {
     private static final int AUDIT = 3;
     private static final int DISPLAY_DOCTORS = 4;
     private static final int LOGOUT = 5;
+    private static final Logger logger = LogManager.getLogger(AdminMenu.class);
 
     private static ArrayList<Doctor> doctors = new ArrayList<>();
 
@@ -87,6 +91,7 @@ public class AdminMenu {
                         scanner,
                         "\nHow many doctors do you want to register? : ");
 
+        Doctor doctor = null;
         for (int i = 1; i <= numberOfDoctors; i++) {
 
             System.out.println();
@@ -117,13 +122,12 @@ public class AdminMenu {
             String doctorId =
                     String.format("D%04d", doctorCounter++);
 
-            Doctor doctor =
-                    new Doctor(
-                            doctorId,
-                            doctorName,
-                            specialization,
-                            experience,
-                            shift);
+            doctor = new Doctor(
+                    doctorId,
+                    doctorName,
+                    specialization,
+                    experience,
+                    shift);
 
             doctors.add(doctor);
 
@@ -141,8 +145,12 @@ public class AdminMenu {
                     "INFO");
 
             System.out.println();
-            System.out.println("Doctor Registered Successfully.");
+//            System.out.println("Doctor Registered Successfully.");
         }
+        logger.info(
+                "Doctor Registered : {} {}",
+                doctor.getDoctorId(),
+                doctor.getDoctorName());
     }
 
     private static void displayDoctors() {
@@ -198,10 +206,9 @@ public class AdminMenu {
 
         if (!importedDoctors.isEmpty()) {
 
-            AuditLogger.log(
-                    importedDoctors.size()
-                            + " Doctors Imported Successfully.",
-                    "INFO");
+            logger.info(
+                    "{} Doctors Imported Successfully",
+                    importedDoctors.size());
 
         }
 

@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -10,6 +13,9 @@ public class FrontDeskMenu {
     private static final int LOGOUT = 4;
 
     private static ArrayList<Patient> patients = new ArrayList<>();
+
+    private static final Logger logger =
+            LogManager.getLogger(FrontDeskMenu.class);
 
     private static ArrayList<Appointment> appointments = new ArrayList<>();
 
@@ -129,12 +135,9 @@ public class FrontDeskMenu {
          * UC13
          * Log successful patient registration
          */
-        AuditLogger.log(
-                "Patient Registered | ID : "
-                        + patient.getPatientId()
-                        + " | Name : "
-                        + patient.getPatientName(),
-                "INFO");
+        logger.info(
+                "Patient Registered : {}",
+                patient.getPatientId());
 
         System.out.println();
         System.out.println("Patient Registered Successfully.");
