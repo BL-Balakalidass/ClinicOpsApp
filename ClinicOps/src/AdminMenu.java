@@ -1,30 +1,17 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminMenu {
-
-    // Doctor 1
-    private static String doctorName1 = "";
-    private static String specialization1 = "";
-    private static int experience1 = 0;
-    private static String shift1 = "";
-
-    // Doctor 2
-    private static String doctorName2 = "";
-    private static String specialization2 = "";
-    private static int experience2 = 0;
-    private static String shift2 = "";
-
-    // Doctor 3
-    private static String doctorName3 = "";
-    private static String specialization3 = "";
-    private static int experience3 = 0;
-    private static String shift3 = "";
 
     private static final int DOCTOR_ENTRY = 1;
     private static final int BULK_ENTRY = 2;
     private static final int AUDIT = 3;
     private static final int DISPLAY_DOCTORS = 4;
     private static final int LOGOUT = 5;
+
+    private static ArrayList<Doctor> doctors = new ArrayList<>();
+
+    private static int doctorCounter = 1;
 
     public static void showAdminMenu(Scanner scanner) {
 
@@ -35,7 +22,7 @@ public class AdminMenu {
             displayAdminOptions();
 
             int choice = ScannerHelper.readInteger(scanner,
-                    "Enter your choice: ");
+                    "Enter your choice : ");
 
             switch (choice) {
 
@@ -46,7 +33,7 @@ public class AdminMenu {
 
                 case BULK_ENTRY:
 
-                    System.out.println("\nBulk Entry feature will be implemented in future UC.");
+                    System.out.println("\nBulk Import feature will be implemented in future UC.");
                     break;
 
                 case AUDIT:
@@ -70,74 +57,64 @@ public class AdminMenu {
                     System.out.println("\nInvalid Menu Option.");
             }
         }
-
     }
 
     private static void displayAdminOptions() {
 
         System.out.println();
-        System.out.println("==================================");
-        System.out.println("        ADMIN MENU");
-        System.out.println("==================================");
+        System.out.println("=================================");
+        System.out.println("         ADMIN MENU");
+        System.out.println("=================================");
         System.out.println("1. Doctor's Data Entry");
         System.out.println("2. Bulk Data Entry");
         System.out.println("3. View Audit Logs");
         System.out.println("4. Display Doctors");
         System.out.println("5. Logout");
-        System.out.println("==================================");
-
+        System.out.println("=================================");
     }
 
     private static void registerDoctors(Scanner scanner) {
 
-        System.out.println("\nEnter Details of Doctor 1");
+        int numberOfDoctors =
+                ScannerHelper.readInteger(scanner,
+                        "\nHow many doctors do you want to register? : ");
 
-        doctorName1 = ScannerHelper.readString(scanner,
-                "Doctor Name : ");
+        for (int i = 1; i <= numberOfDoctors; i++) {
 
-        specialization1 = ScannerHelper.readString(scanner,
-                "Specialization : ");
+            System.out.println();
+            System.out.println("Enter Details of Doctor " + i);
 
-        experience1 = ScannerHelper.readInteger(scanner,
-                "Experience (Years): ");
+            String name =
+                    ScannerHelper.readString(scanner,
+                            "Doctor Name : ");
 
-        shift1 = ScannerHelper.readString(scanner,
-                "Availability Shift : ");
+            String specialization =
+                    ScannerHelper.readString(scanner,
+                            "Specialization : ");
 
-        System.out.println();
+            int experience =
+                    ScannerHelper.readInteger(scanner,
+                            "Experience (Years): ");
 
-        System.out.println("Enter Details of Doctor 2");
+            String shift =
+                    ScannerHelper.readString(scanner,
+                            "Shift (Morning/Evening/Both): ");
 
-        doctorName2 = ScannerHelper.readString(scanner,
-                "Doctor Name : ");
+            String doctorId =
+                    String.format("D%04d", doctorCounter++);
 
-        specialization2 = ScannerHelper.readString(scanner,
-                "Specialization : ");
+            Doctor doctor =
+                    new Doctor(
+                            doctorId,
+                            name,
+                            specialization,
+                            experience,
+                            shift);
 
-        experience2 = ScannerHelper.readInteger(scanner,
-                "Experience (Years): ");
+            doctors.add(doctor);
 
-        shift2 = ScannerHelper.readString(scanner,
-                "Availability Shift : ");
-
-        System.out.println();
-
-        System.out.println("Enter Details of Doctor 3");
-
-        doctorName3 = ScannerHelper.readString(scanner,
-                "Doctor Name : ");
-
-        specialization3 = ScannerHelper.readString(scanner,
-                "Specialization : ");
-
-        experience3 = ScannerHelper.readInteger(scanner,
-                "Experience (Years): ");
-
-        shift3 = ScannerHelper.readString(scanner,
-                "Availability Shift : ");
-
-        System.out.println();
-        System.out.println("Doctor Details Registered Successfully.");
+            System.out.println("Doctor Registered Successfully.");
+        }
 
     }
 
@@ -145,39 +122,22 @@ public class AdminMenu {
 
         System.out.println();
 
-        System.out.println("============== DOCTOR LIST ==============");
-
-        if (doctorName1.isEmpty()) {
+        if (doctors.isEmpty()) {
 
             System.out.println("No Doctors Registered.");
-
             return;
         }
 
-        System.out.println("------------------------------------------");
-        System.out.println("Doctor 1");
-        System.out.println("Name            : " + doctorName1);
-        System.out.println("Specialization  : " + specialization1);
-        System.out.println("Experience      : " + experience1 + " Years");
-        System.out.println("Shift           : " + shift1);
+        System.out.println("==============================================");
+        System.out.println("          REGISTERED DOCTORS");
+        System.out.println("==============================================");
 
-        System.out.println("------------------------------------------");
+        for (Doctor doctor : doctors) {
 
-        System.out.println("Doctor 2");
-        System.out.println("Name            : " + doctorName2);
-        System.out.println("Specialization  : " + specialization2);
-        System.out.println("Experience      : " + experience2 + " Years");
-        System.out.println("Shift           : " + shift2);
+            System.out.println(doctor);
 
-        System.out.println("------------------------------------------");
-
-        System.out.println("Doctor 3");
-        System.out.println("Name            : " + doctorName3);
-        System.out.println("Specialization  : " + specialization3);
-        System.out.println("Experience      : " + experience3 + " Years");
-        System.out.println("Shift           : " + shift3);
-
-        System.out.println("==========================================");
+            System.out.println("----------------------------------------------");
+        }
 
     }
 
