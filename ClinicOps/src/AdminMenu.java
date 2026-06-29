@@ -159,7 +159,8 @@ public class AdminMenu {
         ArrayList<Doctor> importedDoctors =
                 FileHandler.readDoctorsFromCSV(
                         fileName,
-                        doctorCounter);
+                        doctorCounter,
+                        doctors);
 
         doctors.addAll(importedDoctors);
 

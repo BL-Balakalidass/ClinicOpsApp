@@ -1,80 +1,122 @@
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.opencsv.CSVReader;
 
 public class FileHandler {
 
-    public static ArrayList<Doctor> readDoctorsFromCSV(String fileName, int startId) {
+    /**
+     * Reads doctor data from a CSV file using OpenCSV.
+     *
+     * CSV Format:
+     * Name,Specialization,Experience,Shift
+     *
+     * Example:
+     * John,CARDIOLOGY,12,MORNING
+     * David,NEUROLOGY,8,EVENING
+     */
+    public static <CsvValidationException extends Throwable> ArrayList<Doctor> readDoctorsFromCSV(
+            String fileName,
+            int startId,
+            List<Doctor> existingDoctors) {
 
-        ArrayList<Doctor> doctors = new ArrayList<>();
+        ArrayList<Doctor> importedDoctors = new ArrayList<>();
 
-        int idCounter = startId;
+        int doctorCounter = startId;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (CSVReader csvReader = new CSVReader(new FileReader(fileName))) {
 
-            String line;
+            String[] record;
 
-            while ((line = reader.readLine()) != null) {
+            while ((record = csvReader.readNext()) != null) {
 
-                if (line.trim().isEmpty()) {
+                // Skip empty records
+                if (record.length == 0) {
                     continue;
                 }
 
-                String[] data = line.split(",");
+                // Validate column count
+                if (record.length != 4) {
 
-                if (data.length != 4) {
-                    System.out.println("Invalid Record : " + line);
+                    System.out.println("---------------------------------------");
+                    System.out.println("Invalid Record Skipped");
+                    System.out.println("Reason : Incorrect number of columns");
+                    System.out.println("---------------------------------------");
                     continue;
                 }
 
                 try {
 
-                    String name = data[0].trim();
+                    String doctorName = record[0].trim();
 
                     Specialization specialization =
                             Specialization.valueOf(
-                                    data[1].trim().toUpperCase().replace(" ", "_"));
+                                    record[1]
+                                            .trim()
+                                            .toUpperCase()
+                                            .replace(" ", "_"));
 
                     int experience =
-                            Integer.parseInt(data[2].trim());
+                            Integer.parseInt(record[2].trim());
 
                     Shift shift =
                             Shift.valueOf(
-                                    data[3].trim().toUpperCase());
+                                    record[3]
+                                            .trim()
+                                            .toUpperCase());
 
                     String doctorId =
-                            String.format("D%04d", idCounter++);
+                            String.format("D%04d", doctorCounter);
 
-                    Doctor doctor =
-                            new Doctor(
-                                    doctorId,
-                                    name,
-                                    specialization,
-                                    experience,
-                                    shift);
+                    Doctor doctor = new Doctor(
+                            doctorId,
+                            doctorName,
+                            specialization,
+                            experience,
+                            shift);
 
-                    doctors.add(doctor);
+                    // Duplicate check against existing doctors
+                    if (existingDoctors.contains(doctor)
+                            || importedDoctors.contains(doctor)) {
 
-                } catch (IllegalArgumentException e) {
+                        System.out.println("---------------------------------------");
+                        System.out.println("Duplicate Doctor Skipped");
+                        System.out.println("Doctor : " + doctorName);
+                        System.out.println("---------------------------------------");
 
-                    System.out.println("Invalid specialization/shift : " + line);
+                        continue;
+                    }
 
-                } catch (Exception e) {
+                    importedDoctors.add(doctor);
+                    doctorCounter++;
 
-                    System.out.println("Error Reading Record : " + line);
+                }
+                catch (IllegalArgumentException e) {
+
+                    System.out.println("---------------------------------------");
+                    System.out.println("Invalid Record Skipped");
+                    System.out.println("Doctor : " + record[0]);
+                    System.out.println("Reason : Invalid Specialization or Shift");
+                    System.out.println("---------------------------------------");
 
                 }
 
             }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
 
-            System.out.println("Unable to open file.");
+            System.out.println("---------------------------------------");
+            System.out.println("Unable to Read File");
+            System.out.println(e.getMessage());
+            System.out.println("---------------------------------------");
 
         }
 
-        return doctors;
+
+        return importedDoctors;
 
     }
 
