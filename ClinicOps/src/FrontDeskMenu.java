@@ -27,30 +27,24 @@ public class FrontDeskMenu {
             switch (choice) {
 
                 case REGISTER_PATIENT:
-
                     registerPatient(scanner);
                     break;
 
                 case BOOK_APPOINTMENT:
-
                     System.out.println("\nAppointment Booking will be implemented in next UC.");
                     break;
 
                 case VIEW_PATIENTS:
-
                     viewPatients();
                     break;
 
                 case LOGOUT:
-
                     System.out.println("\nLogging out from Front Desk...");
                     logout = true;
                     break;
 
                 default:
-
                     System.out.println("\nInvalid Menu Option.");
-
             }
 
         }
@@ -61,7 +55,7 @@ public class FrontDeskMenu {
 
         System.out.println();
         System.out.println("=====================================");
-        System.out.println("      FRONT DESK MENU");
+        System.out.println("         FRONT DESK MENU");
         System.out.println("=====================================");
         System.out.println("1. Register Patient");
         System.out.println("2. Book Appointment");
@@ -71,9 +65,33 @@ public class FrontDeskMenu {
 
     }
 
+    /**
+     * UC8 Registration Flow
+     */
     private static void registerPatient(Scanner scanner) {
 
         System.out.println();
+
+        String mobileNumber =
+                ScannerHelper.readMobileNumber(
+                        scanner,
+                        "Mobile Number : ");
+
+        Patient existingPatient =
+                findPatientByMobileNumber(mobileNumber);
+
+        if (existingPatient != null) {
+
+            System.out.println();
+            System.out.println("Patient Already Registered.");
+            System.out.println("Welcome Back "
+                    + existingPatient.getPatientName() + "!");
+            System.out.println();
+
+            System.out.println(existingPatient);
+
+            return;
+        }
 
         String patientName =
                 ScannerHelper.readString(
@@ -89,11 +107,6 @@ public class FrontDeskMenu {
                 ScannerHelper.readInteger(
                         scanner,
                         "Age : ");
-
-        String mobileNumber =
-                ScannerHelper.readMobileNumber(
-                        scanner,
-                        "Mobile Number : ");
 
         String patientId =
                 String.format("P%04d", patientCounter++);
@@ -113,6 +126,26 @@ public class FrontDeskMenu {
 
     }
 
+    /**
+     * Linear Search
+     */
+    private static Patient findPatientByMobileNumber(
+            String mobileNumber) {
+
+        for (Patient patient : patients) {
+
+            if (patient.getMobileNumber().equals(mobileNumber)) {
+
+                return patient;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
     private static void viewPatients() {
 
         System.out.println();
@@ -120,18 +153,16 @@ public class FrontDeskMenu {
         if (patients.isEmpty()) {
 
             System.out.println("No Patients Registered.");
-
             return;
         }
 
         System.out.println("=======================================");
-        System.out.println("        REGISTERED PATIENTS");
+        System.out.println("       REGISTERED PATIENTS");
         System.out.println("=======================================");
 
         for (Patient patient : patients) {
 
             System.out.println(patient);
-
             System.out.println("---------------------------------------");
 
         }
