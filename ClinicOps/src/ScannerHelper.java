@@ -66,5 +66,24 @@ public class ScannerHelper {
         }
 
     }
+    public static String readMobileNumber(Scanner scanner,
+                                          String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String mobile = scanner.nextLine().trim();
+
+            if (mobile.matches("^[6-9]\\d{9}$")) {
+
+                return mobile;
+            }
+
+            System.out.println("Invalid Indian Mobile Number.");
+
+        }
+
+    }
 
 }
