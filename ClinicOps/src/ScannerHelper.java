@@ -3,69 +3,86 @@ import java.util.Scanner;
 public class ScannerHelper {
 
     /**
-     * Reads an integer from the user.
+     * Appointment Slots
+     * Morning : 8 Slots
+     * Evening : 8 Slots
      */
-    public static int readInteger(Scanner scanner, String message) {
+    private static final String[] APPOINTMENT_SLOTS = {
+
+            "09:00 AM",
+            "09:30 AM",
+            "10:00 AM",
+            "10:30 AM",
+            "11:00 AM",
+            "11:30 AM",
+            "12:00 PM",
+            "12:30 PM",
+
+            "04:00 PM",
+            "04:30 PM",
+            "05:00 PM",
+            "05:30 PM",
+            "06:00 PM",
+            "06:30 PM",
+            "07:00 PM",
+            "07:30 PM"
+    };
+
+    /**
+     * Reads Menu Integer
+     */
+    public static int readInteger(Scanner scanner,
+                                  String message) {
 
         while (true) {
 
-            System.out.print(message);
-
             try {
-                return Integer.parseInt(scanner.nextLine());
+
+                System.out.print(message);
+
+                int value =
+                        Integer.parseInt(scanner.nextLine());
+
+                return value;
 
             } catch (NumberFormatException e) {
 
-                System.out.println("Invalid input! Please enter a valid number.");
+                System.out.println("Please enter a valid integer.");
+
             }
+
         }
+
     }
 
     /**
-     * Reads a non-empty string.
+     * Reads Non Empty String
      */
-    public static String readString(Scanner scanner, String message) {
+    public static String readString(Scanner scanner,
+                                    String message) {
 
         while (true) {
 
             System.out.print(message);
 
-            String value = scanner.nextLine().trim();
+            String input =
+                    scanner.nextLine().trim();
 
-            if (!value.isEmpty()) {
-                return value;
+            if (!input.isEmpty()) {
+
+                return input;
+
             }
 
             System.out.println("Input cannot be empty.");
-        }
-    }
 
-    public static <T extends Enum<T>> T readEnumChoice(
-            Scanner scanner,
-            String message,
-            T[] values) {
-
-        while (true) {
-
-            System.out.println();
-            System.out.println(message);
-
-            for (int i = 0; i < values.length; i++) {
-
-                System.out.println((i + 1) + ". " + values[i]);
-            }
-
-            int choice = readInteger(scanner, "Enter Choice : ");
-
-            if (choice >= 1 && choice <= values.length) {
-
-                return values[choice - 1];
-            }
-
-            System.out.println("Invalid Choice.");
         }
 
     }
+
+    /**
+     * Reads Indian Mobile Number
+     */
     public static String readMobileNumber(Scanner scanner,
                                           String message) {
 
@@ -73,14 +90,105 @@ public class ScannerHelper {
 
             System.out.print(message);
 
-            String mobile = scanner.nextLine().trim();
+            String mobile =
+                    scanner.nextLine().trim();
 
             if (mobile.matches("^[6-9]\\d{9}$")) {
 
                 return mobile;
+
             }
 
             System.out.println("Invalid Indian Mobile Number.");
+
+        }
+
+    }
+
+    /**
+     * Generic Enum Reader
+     */
+    public static <T extends Enum<T>> T readEnumChoice(
+            Scanner scanner,
+            Class<T> enumClass,
+            String message) {
+
+        T[] values = enumClass.getEnumConstants();
+
+        while (true) {
+
+            System.out.println();
+
+            System.out.println(message);
+
+            for (int i = 0; i < values.length; i++) {
+
+                System.out.println((i + 1) + ". " + values[i]);
+
+            }
+
+            int choice =
+                    readInteger(scanner,
+                            "Enter Choice : ");
+
+            if (choice >= 1 &&
+                    choice <= values.length) {
+
+                return values[choice - 1];
+
+            }
+
+            System.out.println("Invalid Choice.");
+
+        }
+
+    }
+
+    /**
+     * Displays Appointment Slots
+     */
+    private static void displayAppointmentSlots() {
+
+        System.out.println();
+
+        System.out.println("Available Appointment Slots");
+
+        System.out.println("--------------------------------");
+
+        for (int i = 0; i < APPOINTMENT_SLOTS.length; i++) {
+
+            System.out.printf("%2d. %s%n",
+                    i + 1,
+                    APPOINTMENT_SLOTS[i]);
+
+        }
+
+        System.out.println("--------------------------------");
+
+    }
+
+    /**
+     * Read Appointment Slot
+     */
+    public static String readAppointmentSlot(
+            Scanner scanner) {
+
+        while (true) {
+
+            displayAppointmentSlots();
+
+            int choice =
+                    readInteger(scanner,
+                            "Select Slot : ");
+
+            if (choice >= 1 &&
+                    choice <= APPOINTMENT_SLOTS.length) {
+
+                return APPOINTMENT_SLOTS[choice - 1];
+
+            }
+
+            System.out.println("Invalid Slot Selection.");
 
         }
 

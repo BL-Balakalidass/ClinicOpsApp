@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Doctor {
@@ -7,6 +8,10 @@ public class Doctor {
     private Specialization specialization;
     private int experience;
     private Shift shift;
+
+    // UC9
+    // Stores all booked appointment slots
+    private ArrayList<String> bookedSlots;
 
     /**
      * Constructor
@@ -22,6 +27,9 @@ public class Doctor {
         this.specialization = specialization;
         this.experience = experience;
         this.shift = shift;
+
+        // Initially doctor has no appointments
+        this.bookedSlots = new ArrayList<>();
     }
 
     // ===========================
@@ -48,8 +56,15 @@ public class Doctor {
         return shift;
     }
 
+    /**
+     * Returns booked slots
+     */
+    public ArrayList<String> getBookedSlots() {
+        return bookedSlots;
+    }
+
     // ===========================
-    // Setters (Optional)
+    // Setters
     // ===========================
 
     public void setDoctorId(String doctorId) {
@@ -73,10 +88,39 @@ public class Doctor {
     }
 
     // ===========================
-    // Duplicate Check
+    // UC9 Appointment Methods
     // ===========================
-    // Two doctors are considered duplicates if
-    // Name + Specialization + Experience are same.
+
+    /**
+     * Checks whether the given slot is available.
+     *
+     * @param slot Appointment Slot
+     * @return true if available
+     */
+    public boolean isSlotAvailable(String slot) {
+
+        return !bookedSlots.contains(slot);
+
+    }
+
+    /**
+     * Books the slot.
+     *
+     * @param slot Appointment Slot
+     */
+    public void bookSlot(String slot) {
+
+        if (isSlotAvailable(slot)) {
+
+            bookedSlots.add(slot);
+
+        }
+
+    }
+
+    // ===========================
+    // Duplicate Detection (UC6)
+    // ===========================
 
     @Override
     public boolean equals(Object obj) {
@@ -85,15 +129,20 @@ public class Doctor {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null ||
+                getClass() != obj.getClass()) {
             return false;
         }
 
         Doctor doctor = (Doctor) obj;
 
         return experience == doctor.experience
-                && doctorName.equalsIgnoreCase(doctor.doctorName)
-                && specialization == doctor.specialization;
+                &&
+                doctorName.equalsIgnoreCase(
+                        doctor.doctorName)
+                &&
+                specialization == doctor.specialization;
+
     }
 
     @Override
@@ -103,6 +152,7 @@ public class Doctor {
                 doctorName.toLowerCase(),
                 specialization,
                 experience);
+
     }
 
     // ===========================
@@ -114,19 +164,31 @@ public class Doctor {
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append("--------------------------------------\n");
-        builder.append("Doctor ID       : ").append(doctorId).append("\n");
-        builder.append("Doctor Name     : ").append(doctorName).append("\n");
-        builder.append("Specialization  : ").append(specialization).append("\n");
+        builder.append("----------------------------------------\n");
+        builder.append("Doctor ID       : ")
+                .append(doctorId)
+                .append("\n");
+
+        builder.append("Doctor Name     : ")
+                .append(doctorName)
+                .append("\n");
+
+        builder.append("Specialization  : ")
+                .append(specialization)
+                .append("\n");
+
         builder.append("Experience      : ")
                 .append(experience)
                 .append(" Years\n");
+
         builder.append("Shift           : ")
                 .append(shift)
                 .append("\n");
-        builder.append("--------------------------------------");
+
+        builder.append("----------------------------------------");
 
         return builder.toString();
+
     }
 
 }

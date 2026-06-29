@@ -11,6 +11,15 @@ public class AdminMenu {
 
     private static ArrayList<Doctor> doctors = new ArrayList<>();
 
+    /**
+     * Returns all registered doctors.
+     * Used by FrontDeskMenu for appointment booking.
+     */
+    public static ArrayList<Doctor> getDoctors() {
+
+        return doctors;
+
+    }
     private static int doctorCounter = 1;
 
     public static void showAdminMenu(Scanner scanner) {
@@ -76,7 +85,8 @@ public class AdminMenu {
     private static void registerDoctors(Scanner scanner) {
 
         int numberOfDoctors =
-                ScannerHelper.readInteger(scanner,
+                ScannerHelper.readInteger(
+                        scanner,
                         "\nHow many doctors do you want to register? : ");
 
         for (int i = 1; i <= numberOfDoctors; i++) {
@@ -85,24 +95,26 @@ public class AdminMenu {
             System.out.println("Enter Details of Doctor " + i);
 
             String doctorName =
-                    ScannerHelper.readString(scanner,
+                    ScannerHelper.readString(
+                            scanner,
                             "Doctor Name : ");
 
             Specialization specialization =
                     ScannerHelper.readEnumChoice(
                             scanner,
-                            "Select Specialization",
-                            Specialization.values());
+                            Specialization.class,
+                            "Select Specialization");
 
             int experience =
-                    ScannerHelper.readInteger(scanner,
+                    ScannerHelper.readInteger(
+                            scanner,
                             "Experience : ");
 
             Shift shift =
                     ScannerHelper.readEnumChoice(
                             scanner,
-                            "Select Shift",
-                            Shift.values());
+                            Shift.class,
+                            "Select Shift");
 
             String doctorId =
                     String.format("D%04d", doctorCounter++);
@@ -120,7 +132,6 @@ public class AdminMenu {
             System.out.println();
             System.out.println("Doctor Registered Successfully.");
         }
-
     }
 
     private static void displayDoctors() {
