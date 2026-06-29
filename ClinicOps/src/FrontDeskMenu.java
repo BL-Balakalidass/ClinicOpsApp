@@ -190,12 +190,21 @@ public class FrontDeskMenu {
         if (patient == null) {
 
             System.out.println();
-
             System.out.println("Patient is not registered.");
-
             return;
-
         }
+
+        System.out.println();
+        System.out.println("Select Required Specialization");
+
+        Specialization specialization =
+                ScannerHelper.readEnumChoice(
+                        scanner,
+                        Specialization.class,
+                        "Choose Specialization");
+
+        String slot =
+                ScannerHelper.readAppointmentSlot(scanner);
 
         ArrayList<Doctor> doctors =
                 AdminMenu.getDoctors();
@@ -203,44 +212,49 @@ public class FrontDeskMenu {
         if (doctors.isEmpty()) {
 
             System.out.println();
-
             System.out.println("No Doctors Available.");
-
             return;
-
         }
 
-        String slot =
-                ScannerHelper.readAppointmentSlot(scanner);
+        // Check whether any doctor exists for selected specialization
 
-        ArrayList<Doctor> availableDoctors =
-                new ArrayList<>();
+        boolean specializationExists =
+                doctors.stream()
+                        .anyMatch(doc ->
+                                doc.getSpecialization() == specialization);
 
-        for (Doctor doctor : doctors) {
-
-            if (doctor.isSlotAvailable(slot)) {
-
-                availableDoctors.add(doctor);
-
-            }
-
-        }
-
-        if (availableDoctors.isEmpty()) {
+        if (!specializationExists) {
 
             System.out.println();
-
-            System.out.println("No Doctor Available for the selected slot.");
+            System.out.println(
+                    "No Doctor available for "
+                            + specialization);
 
             return;
-
         }
 
-        Random random = new Random();
+        // Find first doctor with specialization and free slot
 
         Doctor assignedDoctor =
-                availableDoctors.get(
-                        random.nextInt(availableDoctors.size()));
+                doctors.stream()
+
+                        .filter(doc ->
+                                doc.getSpecialization() == specialization)
+
+                        .filter(doc ->
+                                doc.isSlotAvailable(slot))
+
+                        .findFirst()
+
+                        .orElse(null);
+
+        if (assignedDoctor == null) {
+
+            System.out.println();
+            System.out.println(
+                    "No Doctor Available for selected slot.");
+            return;
+        }
 
         assignedDoctor.bookSlot(slot);
 
@@ -253,7 +267,6 @@ public class FrontDeskMenu {
         appointments.add(appointment);
 
         System.out.println();
-
         System.out.println(appointment);
 
     }
