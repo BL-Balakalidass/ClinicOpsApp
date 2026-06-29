@@ -36,12 +36,10 @@ public class AdminMenu {
             switch (choice) {
 
                 case DOCTOR_ENTRY:
-
                     registerDoctors(scanner);
                     break;
 
                 case BULK_ENTRY:
-
                     bulkImportDoctors(scanner);
                     break;
 
@@ -129,12 +127,19 @@ public class AdminMenu {
 
             doctors.add(doctor);
 
+            /*
+             * UC13
+             * Log successful doctor registration
+             */
             AuditLogger.log(
-                    "Doctor Registered : "
+                    "Doctor Registered | ID : "
                             + doctor.getDoctorId()
-                            + " - "
-                            + doctor.getDoctorName(),
+                            + " | Name : "
+                            + doctor.getDoctorName()
+                            + " | Specialization : "
+                            + doctor.getSpecialization(),
                     "INFO");
+
             System.out.println();
             System.out.println("Doctor Registered Successfully.");
         }
@@ -190,6 +195,15 @@ public class AdminMenu {
         }
 
         doctors.addAll(importedDoctors);
+
+        if (!importedDoctors.isEmpty()) {
+
+            AuditLogger.log(
+                    importedDoctors.size()
+                            + " Doctors Imported Successfully.",
+                    "INFO");
+
+        }
 
         AuditLogger.log(
                 importedDoctors.size()
