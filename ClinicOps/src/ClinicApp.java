@@ -11,6 +11,12 @@ public class ClinicApp {
         Scanner scanner = new Scanner(System.in);
         boolean exitSystem = false;
 
+
+
+
+
+
+
         System.out.println("==========================================");
         System.out.println("     WELCOME TO TOWNCLINIC");
         System.out.println(" Clinic Operations Management System");
