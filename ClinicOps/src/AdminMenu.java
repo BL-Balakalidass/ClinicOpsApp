@@ -84,21 +84,25 @@ public class AdminMenu {
             System.out.println();
             System.out.println("Enter Details of Doctor " + i);
 
-            String name =
+            String doctorName =
                     ScannerHelper.readString(scanner,
                             "Doctor Name : ");
 
-            String specialization =
-                    ScannerHelper.readString(scanner,
-                            "Specialization : ");
+            Specialization specialization =
+                    ScannerHelper.readEnumChoice(
+                            scanner,
+                            "Select Specialization",
+                            Specialization.values());
 
             int experience =
                     ScannerHelper.readInteger(scanner,
-                            "Experience (Years): ");
+                            "Experience : ");
 
-            String shift =
-                    ScannerHelper.readString(scanner,
-                            "Shift (Morning/Evening/Both): ");
+            Shift shift =
+                    ScannerHelper.readEnumChoice(
+                            scanner,
+                            "Select Shift",
+                            Shift.values());
 
             String doctorId =
                     String.format("D%04d", doctorCounter++);
@@ -106,13 +110,14 @@ public class AdminMenu {
             Doctor doctor =
                     new Doctor(
                             doctorId,
-                            name,
+                            doctorName,
                             specialization,
                             experience,
                             shift);
 
             doctors.add(doctor);
 
+            System.out.println();
             System.out.println("Doctor Registered Successfully.");
         }
 

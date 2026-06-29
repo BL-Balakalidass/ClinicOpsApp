@@ -2,14 +2,15 @@ public class Doctor {
 
     private String doctorId;
     private String doctorName;
-    private String specialization;
+    private Specialization specialization;
     private int experience;
-    private String shift;
+    private Shift shift;
 
-    public Doctor(String doctorId, String doctorName,
-                  String specialization,
+    public Doctor(String doctorId,
+                  String doctorName,
+                  Specialization specialization,
                   int experience,
-                  String shift) {
+                  Shift shift) {
 
         this.doctorId = doctorId;
         this.doctorName = doctorName;
@@ -26,7 +27,7 @@ public class Doctor {
         return doctorName;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
@@ -34,18 +35,18 @@ public class Doctor {
         return experience;
     }
 
-    public String getShift() {
+    public Shift getShift() {
         return shift;
     }
 
     @Override
     public String toString() {
 
-        return "Doctor ID       : " + doctorId +
-                "\nDoctor Name     : " + doctorName +
-                "\nSpecialization  : " + specialization +
-                "\nExperience      : " + experience + " Years" +
-                "\nShift           : " + shift;
+        return "Doctor ID       : " + doctorId
+                + "\nDoctor Name     : " + doctorName
+                + "\nSpecialization  : " + specialization
+                + "\nExperience      : " + experience + " Years"
+                + "\nShift           : " + shift;
     }
 
 }
