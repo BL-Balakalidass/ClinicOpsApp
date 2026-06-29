@@ -40,4 +40,31 @@ public class ScannerHelper {
         }
     }
 
+    public static <T extends Enum<T>> T readEnumChoice(
+            Scanner scanner,
+            String message,
+            T[] values) {
+
+        while (true) {
+
+            System.out.println();
+            System.out.println(message);
+
+            for (int i = 0; i < values.length; i++) {
+
+                System.out.println((i + 1) + ". " + values[i]);
+            }
+
+            int choice = readInteger(scanner, "Enter Choice : ");
+
+            if (choice >= 1 && choice <= values.length) {
+
+                return values[choice - 1];
+            }
+
+            System.out.println("Invalid Choice.");
+        }
+
+    }
+
 }
