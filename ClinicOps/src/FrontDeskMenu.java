@@ -124,6 +124,11 @@ public class FrontDeskMenu {
 
         patients.add(patient);
 
+        AuditLogger.log(
+                "Patient Registered : "
+                        + patient.getPatientId(),
+                "INFO");
+
         System.out.println();
         System.out.println("Patient Registered Successfully.");
 
@@ -272,6 +277,14 @@ public class FrontDeskMenu {
 
         appointments.add(appointment);
 
+        AuditLogger.log(
+                "Appointment Booked : "
+                        + patient.getPatientId()
+                        + " -> "
+                        + assignedDoctor.getDoctorId()
+                        + " at "
+                        + slot,
+                "INFO");
         System.out.println();
         System.out.println(appointment);
 
