@@ -122,11 +122,18 @@ public class FrontDeskMenu {
                         age,
                         mobileNumber);
 
+
         patients.add(patient);
 
+        /*
+         * UC13
+         * Log successful patient registration
+         */
         AuditLogger.log(
-                "Patient Registered : "
-                        + patient.getPatientId(),
+                "Patient Registered | ID : "
+                        + patient.getPatientId()
+                        + " | Name : "
+                        + patient.getPatientName(),
                 "INFO");
 
         System.out.println();
@@ -277,14 +284,19 @@ public class FrontDeskMenu {
 
         appointments.add(appointment);
 
+        /*
+         * UC13
+         * Log successful appointment booking
+         */
         AuditLogger.log(
-                "Appointment Booked : "
+                "Appointment Booked | Patient : "
                         + patient.getPatientId()
-                        + " -> "
+                        + " | Doctor : "
                         + assignedDoctor.getDoctorId()
-                        + " at "
+                        + " | Slot : "
                         + slot,
                 "INFO");
+
         System.out.println();
         System.out.println(appointment);
 
