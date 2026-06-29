@@ -58,4 +58,22 @@ public class AuditLogger {
 
     }
 
+    public static void logInfo(String message) {
+
+        log(message, "INFO");
+
+    }
+
+    public static void logWarning(String message) {
+
+        log(message, "WARNING");
+
+    }
+
+    public static void logError(String message) {
+
+        log(message, "ERROR");
+
+    }
+
 }
