@@ -33,7 +33,7 @@ public class AdminMenu {
 
                 case BULK_ENTRY:
 
-                    System.out.println("\nBulk Import feature will be implemented in future UC.");
+                    bulkImportDoctors(scanner);
                     break;
 
                 case AUDIT:
@@ -143,6 +143,32 @@ public class AdminMenu {
 
             System.out.println("----------------------------------------------");
         }
+
+
+    }
+
+    private static void bulkImportDoctors(Scanner scanner) {
+
+        System.out.println();
+
+        String fileName =
+                ScannerHelper.readString(
+                        scanner,
+                        "Enter CSV File Path : ");
+
+        ArrayList<Doctor> importedDoctors =
+                FileHandler.readDoctorsFromCSV(
+                        fileName,
+                        doctorCounter);
+
+        doctors.addAll(importedDoctors);
+
+        doctorCounter += importedDoctors.size();
+
+        System.out.println();
+
+        System.out.println(importedDoctors.size()
+                + " Doctor(s) Imported Successfully.");
 
     }
 
