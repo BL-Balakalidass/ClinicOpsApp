@@ -117,6 +117,34 @@ public class Doctor {
         }
 
     }
+    /**
+     * UC11
+     * Checks whether the doctor is available
+     * in the requested shift.
+     */
+    public boolean isShiftCompatible(String slot) {
+
+        boolean isMorningSlot =
+                slot.startsWith("09")
+                        || slot.startsWith("10")
+                        || slot.startsWith("11")
+                        || slot.startsWith("12");
+
+        switch (shift) {
+
+            case BOTH:
+                return true;
+
+            case MORNING:
+                return isMorningSlot;
+
+            case EVENING:
+                return !isMorningSlot;
+
+            default:
+                return false;
+        }
+    }
 
     // ===========================
     // Duplicate Detection (UC6)
