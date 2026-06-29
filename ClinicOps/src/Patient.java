@@ -27,6 +27,7 @@ public class Patient {
         return patientName;
     }
 
+
     public String getGender() {
         return gender;
     }
