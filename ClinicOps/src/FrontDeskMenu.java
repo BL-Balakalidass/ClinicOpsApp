@@ -202,7 +202,12 @@ public class FrontDeskMenu {
         if (patient == null) {
 
             System.out.println();
-            System.out.println("Patient is not registered.");
+            System.out.println(
+                    "Patient is not registered.");
+
+            AuditLogger.logWarning(
+                    "Appointment Booking Attempt for Unknown Mobile Number : "
+                            + mobileNumber);
             return;
         }
 
@@ -224,7 +229,11 @@ public class FrontDeskMenu {
         if (doctors.isEmpty()) {
 
             System.out.println();
-            System.out.println("No Doctors Available.");
+            System.out.println(
+                    "No Doctor Available.");
+
+            AuditLogger.logWarning(
+                    "Appointment Booking Failed : No Doctors Available");
             return;
         }
 

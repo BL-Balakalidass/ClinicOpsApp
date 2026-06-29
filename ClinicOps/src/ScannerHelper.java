@@ -83,8 +83,9 @@ public class ScannerHelper {
     /**
      * Reads Indian Mobile Number
      */
-    public static String readMobileNumber(Scanner scanner,
-                                          String message) {
+    public static String readMobileNumber(
+            Scanner scanner,
+            String message) {
 
         while (true) {
 
@@ -95,11 +96,30 @@ public class ScannerHelper {
 
             if (mobile.matches("^[6-9]\\d{9}$")) {
 
+                invalidMobileAttempts = 0;
+
                 return mobile;
 
             }
 
-            System.out.println("Invalid Indian Mobile Number.");
+            invalidMobileAttempts++;
+
+            System.out.println(
+                    "Invalid Indian Mobile Number.");
+
+            AuditLogger.logWarning(
+                    "Invalid Mobile Number Entered : "
+                            + mobile);
+
+            if (invalidMobileAttempts
+                    >= MAX_INVALID_MOBILE_ATTEMPTS) {
+
+                AuditLogger.logError(
+                        "SECURITY ALERT : "
+                                + invalidMobileAttempts
+                                + " consecutive invalid mobile numbers entered.");
+
+            }
 
         }
 
@@ -193,5 +213,10 @@ public class ScannerHelper {
         }
 
     }
+
+
+    private static final int MAX_INVALID_MOBILE_ATTEMPTS = 3;
+
+    private static int invalidMobileAttempts = 0;
 
 }
