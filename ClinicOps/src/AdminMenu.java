@@ -47,7 +47,7 @@ public class AdminMenu {
 
                 case AUDIT:
 
-                    System.out.println("\nAudit Log feature will be implemented in future UC.");
+                    AuditLogger.displayLogs();
                     break;
 
                 case DISPLAY_DOCTORS:
@@ -129,6 +129,12 @@ public class AdminMenu {
 
             doctors.add(doctor);
 
+            AuditLogger.log(
+                    "Doctor Registered : "
+                            + doctor.getDoctorId()
+                            + " - "
+                            + doctor.getDoctorName(),
+                    "INFO");
             System.out.println();
             System.out.println("Doctor Registered Successfully.");
         }
@@ -173,7 +179,22 @@ public class AdminMenu {
                         doctorCounter,
                         doctors);
 
+
+        if (importedDoctors.isEmpty()) {
+
+            AuditLogger.log(
+                    "Bulk Import Failed for file : "
+                            + fileName,
+                    "ERROR");
+
+        }
+
         doctors.addAll(importedDoctors);
+
+        AuditLogger.log(
+                importedDoctors.size()
+                        + " Doctor(s) Imported.",
+                "INFO");
 
         doctorCounter += importedDoctors.size();
 
